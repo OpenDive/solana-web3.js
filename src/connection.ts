@@ -44,6 +44,9 @@ import type {FeeCalculator} from './fee-calculator';
 import type {TransactionSignature} from './transaction';
 import type {CompiledInstruction} from './message';
 
+const fs = require('fs');
+const path = require('path');
+
 const PublicKeyFromString = coerce(
   instance(PublicKey),
   string(),
@@ -779,6 +782,9 @@ function createRpcClient(
         waitTime *= 2;
       }
 
+      const jsonStream = fs.createReadStream("./response.dat");
+      jsonStream.pipe(res.text)
+      console.log('RESPONSE SIZE: ' + res.text.length);
       const text = await res.text();
       if (res.ok) {
         callback(null, text);
